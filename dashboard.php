@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Jobs</title>
+    <title>Dashboard</title>
 
     <!-- Prevent the demo from appearing in search engines -->
     <meta name="robots" content="noindex">
@@ -64,7 +64,7 @@
 
 
                         <!-- Navbar Brand -->
-                        <a href="dashboard.html" class="navbar-brand ">
+                        <a href="dashboard.php" class="navbar-brand ">
                             <img class="navbar-brand-icon" src="assets/images/stack-logo-white.svg" width="40" alt="car">
                             <span>Reben</span>
                         </a>
@@ -101,14 +101,11 @@
             <div class="mdk-drawer-layout js-mdk-drawer-layout" data-push data-responsive-width="992px">
                 <div class="mdk-drawer-layout__content page">
 
-
-
-
-
                     <div class="container page__heading-container">
+                        
                         <div class="page__heading d-flex align-items-center">
                             <div class="flex">                               
-                                <h1 class="m-0">Jobs</h1>
+                                <h1 class="m-0">Dashboard</h1>
                             </div>
                             <a href="" class="btn btn-warning ml-3" data-toggle="modal" data-target="#modal-addclient"> + New Job</a>
                         </div>
@@ -119,36 +116,69 @@
 
                     <div class="container page__container">                        
 
-                        <table id='jobsTable' class="table mb-0 thead-border-top-0">
-                            <thead>
-                                <tr>
-
-                                    <!-- <th scope="col">ID</th> -->
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Phone</th>
-                                    <th scope="col">Location</th>
-                                    <th scope="col">Car Model</th>
-                                    <th scope="col">Year</th>
-                                    <th scope="col">Plate No</th>                                    
-                                    <th scope="col">Color</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Transmission</th>
-                                    <th scope="col">Problem</th>
-                                    <th scope="col">Estimated Date</th>
-                                    <th scope="col">Estimated Cost</th>
-                                    <th scope="col">Action</th>
-                                    
-
-
-                                </tr>
-                            </thead>
-                            <tbody class="list" id="munchbowOrders">
-
-
-
-                            </tbody>
-                        </table>
-                                                     
+                        <div class="row card-group-row">
+                            <div class="col-lg-4 col-md-6 card-group-row__col">
+                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
+                                    <div class="flex">
+                                        <div class="card-header__title text-muted mb-2">Today's Sales</div>
+                                        <div class="text-amount">GHS 3,200</div>
+                                        <!-- <div class="text-stats text-success">31.5% <i class="material-icons">arrow_upward</i></div> -->
+                                    </div>
+                                    <div><i class="material-icons icon-muted icon-40pt ml-3">gps_fixed</i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 card-group-row__col">
+                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
+                                    <div class="flex">
+                                        <div class="card-header__title text-muted mb-2">Past Week's Sales</div>
+                                        <div class="text-amount">GHS 8,920</div>
+                                        <!-- <div class="text-stats text-success">31.5% <i class="material-icons">arrow_upward</i></div> -->
+                                    </div>
+                                    <div><i class="material-icons icon-muted icon-40pt ml-3">gps_fixed</i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 card-group-row__col">
+                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
+                                    <div class="flex">
+                                        <div class="card-header__title text-muted mb-2">Past Month's Sales</div>
+                                        <div class="text-amount">GHS 12,920</div>
+                                        <!-- <div class="text-stats text-success">31.5% <i class="material-icons">arrow_upward</i></div> -->
+                                    </div>
+                                    <div><i class="material-icons icon-muted icon-40pt ml-3">gps_fixed</i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12 card-group-row__col">
+                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
+                                    <div class="flex">
+                                        <div class="card-header__title text-muted mb-2">Oustanding Debt</div>
+                                        <div class="text-amount">GHS 2,590</div>
+                                        <!-- <div class="text-stats text-danger">3.5% <i class="material-icons">arrow_downward</i></div> -->
+                                    </div>
+                                    <div><i class="material-icons icon-muted icon-40pt ml-3">watch_later</i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 card-group-row__col">
+                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
+                                    <div class="flex">
+                                        <div class="card-header__title text-muted mb-2">Unfinished Jobs</div>
+                                        <div class="text-amount">17</div>
+                                        <!-- <div class="text-stats text-success">51.5% <i class="material-icons">arrow_upward</i></div> -->
+                                    </div>
+                                    <div><i class="material-icons icon-muted  icon-40pt ml-3">hourglass_empty</i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-12 card-group-row__col">
+                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
+                                    <div class="flex">
+                                        <div class="card-header__title text-muted mb-2">Finished Jobs</div>
+                                        <div class="text-amount">8</div>
+                                        <!-- <div class="text-stats text-danger">3.5% <i class="material-icons">arrow_downward</i></div> -->
+                                    </div>
+                                    <div><i class="material-icons icon-muted icon-40pt ml-3">hourglass_full</i></div>
+                                </div>
+                            </div>
+                           
+                        </div>                                
                     </div>   
                 </div>
                 <!-- // END drawer-layout__content -->
@@ -159,15 +189,15 @@
 
                         <div class="sidebar sidebar-mini sidebar-primary sidebar-left simplebar" data-simplebar>
                             <ul class="nav flex-column sidebar-menu mt-3" id="sidebar-mini-tabs" role="tablist">
-                                <li class="sidebar-menu-item" href="dashboard.html" data-toggle="tooltip" data-title="Dashboards" data-placement="right" data-boundary="window">
-                                    <a class="sidebar-menu-button" id = "dashboard" href="dashboard.html" data-toggle="tab" role="tab" aria-controls="sm_dashboards" aria-selected="true">
+                                <li class="sidebar-menu-item active" data-toggle="tooltip" data-title="Dashboards" data-placement="right" data-boundary="window">
+                                    <a class="sidebar-menu-button" href="#sm_dashboards" data-toggle="tab" role="tab" aria-controls="sm_dashboards" aria-selected="true">
                                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dvr</i>
                                         <span class="sidebar-menu-text">Dashboard</span>
                                     </a>
                                 </li>
                                
-                                <li class="sidebar-menu-item active" data-toggle="tooltip" data-title="Jobs List" data-placement="right" data-container="body" data-boundary="window">
-                                    <a class="sidebar-menu-button" href="#sm_pages" data-toggle="tab" role="tab" aria-controls="sm_pages">
+                                <li class="sidebar-menu-item " data-toggle="tooltip" data-title="Jobs List" data-placement="right" data-container="body" data-boundary="window">
+                                    <a class="sidebar-menu-button" id="jobs" href="jobs.php" data-toggle="tab" role="tab" aria-controls="sm_pages">
                                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">description</i>
                                         <span class="sidebar-menu-text">Jobs List</span>
                                     </a>
@@ -211,10 +241,10 @@
     <!-- App Settings FAB -->
     <div id="app-settings">
         <app layout-active="mini" :layout-location="{
-      'default': 'dashboard.html',
-      'fixed': 'dashboard.html',
-      'fluid': 'dashboard.html',
-      'mini': 'dashboard.html'
+      'default': 'dashboard.php',
+      'fixed': 'dashboard.php',
+      'fluid': 'dashboard.php',
+      'mini': 'dashboard.php'
     }"></app>
     </div>
 
@@ -310,8 +340,8 @@
             window.location = "index.html"
         })
 
-        $('#dashboard').click(function (e){
-            window.location = "dashboard.html"
+        $('#jobs').click(function (e){
+            window.location = "jobs.php"
         })
    </script>
 
