@@ -107,7 +107,7 @@
                             <div class="flex">                               
                                 <h1 class="m-0">Dashboard</h1>
                             </div>
-                            <a href="" class="btn btn-warning ml-3" data-toggle="modal" data-target="#modal-addclient"> + New Job</a>
+                            <a href="jobs.php" class="btn btn-warning ml-3"> View Jobs</a>
                         </div>
                     </div>
                    

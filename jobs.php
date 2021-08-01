@@ -60,7 +60,7 @@
 
 
                         <!-- Navbar Brand -->
-                        <a href="dashboard.html" class="navbar-brand ">
+                        <a href="dashboard.php" class="navbar-brand ">
                             <img class="navbar-brand-icon" src="assets/images/stack-logo-white.svg" width="40" alt="car">
                             <span>Reben</span>
                         </a>
@@ -95,7 +95,18 @@
         <div class="mdk-header-layout__content">
 
             <div class="mdk-drawer-layout js-mdk-drawer-layout" data-push data-responsive-width="992px">
-                <div class="mdk-drawer-layout__content page">                
+                <div class="mdk-drawer-layout__content page">    
+                    
+                <div class="container-fluid page__heading-container">
+                        
+                        <div class="page__heading d-flex align-items-center">
+                            <div class="flex">                               
+                                <h4 id="outstanding" class="m-0"> Outstanding Cash : GHS 0.00 </h4> 
+                            </div>
+                           
+                        </div>
+                    </div>
+                   
 
                 <div class="container-fluid page__container">   
                         
@@ -150,11 +161,16 @@
                                 $conn = new mysqli($dbhost, $dbuser, $dbpass, $db)  or die("Connection failed". $conn -> error);
                                 //echo "connected successfully"
 
-                                $sql = "Select * from jobs";
+                                $sql = "SELECT * FROM jobs ORDER BY createdAt DESC";
                                 $result = $conn -> query($sql);
 
+                                $outstanding = 0;
                                 if($result -> num_rows > 0){
                                     while($row = mysqli_fetch_array($result)){
+
+                                       
+                                        $outstanding += $row['EstimatedCost'] ;
+                                        //echo $outstanding;
                                         echo "<tr>";
                                         echo "<td>".$row['Client']."</td>";
                                         echo "<td>".$row['Phone']."</td>";
@@ -167,21 +183,73 @@
                                         echo "<td>".$row['Transmission']."</td>";
                                         echo "<td>".$row['Problem']."</td>";
                                         echo "<td>".$row['EstimatedDate']."</td>";
-                                        echo "<td>".$row['EstimatedCost']."</td>";                                      
+                                        echo "<td>".number_format($row['EstimatedCost'])."</td>";                                      
                                         echo "<td style='width:150px'>
-                                        <a  id = ".$row['id']."class='viewItem btn btn-info btn-sm' title='View Specifications'> <i style = 'color:white' class='material-icons'>visibility</i></a>
-                                        <a  id = ".$row['id']."class='completeItem btn btn-success btn-sm' title='Complete order' > <i style = 'color:white' class='material-icons'>check</i>  </a>
-                                        <a  id = ".$row['id']."class='removeItem btn btn-danger btn-sm' title='Cancel order'> <i style = 'color:white' class='material-icons'>close</i></a>               
+                                        <button  class='viewItem btn btn-info btn-sm' title='Edit' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>visibility</i></button>
+                                        <button  class='completeItem btn btn-success btn-sm' title='Complete Job' id = ".$row['id']." > <i style = 'color:white' class='material-icons'>check</i>  </button>
+                                        <button  class='removeItem btn btn-danger btn-sm' title='Delete job' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>close</i></button>               
                                         </td>";    
                                         echo "</tr>";
                                     }
+
+                                    echo "<script type=\"text/javascript\">
+                                            var outstanding = document.getElementById('outstanding');
+                                            outstanding.innerHTML = 'Outstanding Cash: GHS ' + ($outstanding).toLocaleString();
+                                            
+                                        </script>";
+                                    
                                         
                                 }
                                 else{
                                     print("no data found");
-                                }
+                                }                          
                             
-
+                                //inserting into jobs table
+                                // Check connection
+                                if($conn === false){
+                                    die("ERROR: Could not connect. " 
+                                        . mysqli_connect_error());
+                                }
+                                else{
+                                    if(isset($_POST['submit'])) {
+                                    
+                                        $id = 'RB'.rand();
+                                        $clientName = mysqli_real_escape_string($conn, $_REQUEST['clientName']);
+                                        $phone = mysqli_real_escape_string($conn, $_REQUEST['phone']);
+                                        $location = mysqli_real_escape_string($conn, $_REQUEST['location']);
+                                        $model = mysqli_real_escape_string($conn, $_REQUEST['model']);
+                                        $prodYear = mysqli_real_escape_string($conn, $_REQUEST['prodYear']);
+                                        $numberPlate = mysqli_real_escape_string($conn, $_REQUEST['numberPlate']);
+                                        $bodyColor = mysqli_real_escape_string($conn, $_REQUEST['bodyColor']);
+                                        $carType = mysqli_real_escape_string($conn, $_REQUEST['carType']);
+                                        $transmission = mysqli_real_escape_string($conn, $_REQUEST['transmission']);
+                                        $problem = mysqli_real_escape_string($conn, $_REQUEST['problem']);
+                                        $estimatedCost = mysqli_real_escape_string($conn, $_REQUEST['estimatedCost']);
+                                        $estimatedDateOfCompletion = mysqli_real_escape_string($conn, $_REQUEST['estimatedDateOfCompletion']);
+                                        $createDate = date('Y-m-d H:i:s');
+          
+                                        // echo  $id;
+                                        // echo  $clientName;
+                                        // echo  $phone;
+                                        // echo  $location; 
+                                        // echo  $model .$prodYear .$numberPlate. $bodyColor. $carType. $transmission. $problem. $estimatedCost. $estimatedDateOfCompletion. $createDate;
+                                          
+          
+                                          $sqlInsert = "INSERT INTO jobs VALUES ('$id','$clientName','$phone','$location','$model','$prodYear',
+                                                       '$numberPlate','$bodyColor','$carType','$transmission','$problem','$estimatedDateOfCompletion',
+                                                       '$estimatedCost','','','','$createDate')";
+                                          
+                                          // use exec() because no results are returned
+                                          //$conn->exec($sqlInsert);
+                                          if(mysqli_query($conn, $sqlInsert)){
+                                              echo "Records added successfully.";
+                                          } else{
+                                              echo "ERROR: Could not execute $sqlInsert. " . mysqli_error($conn);
+                                          }
+                                     }
+                                }
+                               
+                               
                             ?>
 
                             </tbody>
@@ -205,8 +273,8 @@
 
                         <div class="sidebar sidebar-mini sidebar-primary sidebar-left simplebar" data-simplebar>
                             <ul class="nav flex-column sidebar-menu mt-3" id="sidebar-mini-tabs" role="tablist">
-                                <li class="sidebar-menu-item" href="dashboard.html" data-toggle="tooltip" data-title="Dashboards" data-placement="right" data-boundary="window">
-                                    <a class="sidebar-menu-button" id = "dashboard" href="dashboard.html" data-toggle="tab" role="tab" aria-controls="sm_dashboards" aria-selected="true">
+                                <li class="sidebar-menu-item" href="dashboard.php" data-toggle="tooltip" data-title="Dashboards" data-placement="right" data-boundary="window">
+                                    <a class="sidebar-menu-button" id = "dashboard" href="dashboard.php" data-toggle="tab" role="tab" aria-controls="sm_dashboards" aria-selected="true">
                                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">dvr</i>
                                         <span class="sidebar-menu-text">Dashboard</span>
                                     </a>
@@ -257,10 +325,10 @@
     <!-- App Settings FAB -->
     <div id="app-settings">
         <app layout-active="mini" :layout-location="{
-      'default': 'dashboard.html',
-      'fixed': 'dashboard.html',
-      'fluid': 'dashboard.html',
-      'mini': 'dashboard.html'
+      'default': 'dashboard.php',
+      'fixed': 'dashboard.php',
+      'fluid': 'dashboard.php',
+      'mini': 'dashboard.php'
     }"></app>
     </div>
 
@@ -357,7 +425,7 @@
         })
 
         $('#dashboard').click(function (e){
-            window.location = "dashboard.html"
+            window.location = "dashboard.php"
         })
    </script>
 
@@ -408,36 +476,36 @@
                                 </a>
                             </div>
     
-                            <form action="#">
+                            <form action="jobs.php" method="post">
                                 <center><h4>Fill information below:</h4></center>
                                 <div class="form-group">
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">                                   
-                                            <input class="form-control" type="text" id="clientName" required="" placeholder="Client Name">
+                                            <input class="form-control" type="text" name="clientName" required="" placeholder="Client Name">
                                         </div>
                                         <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control" type="phone" id="phone" required="" placeholder="Phone Number">
+                                            <input class="form-control" type="phone" name="phone"  placeholder="Phone Number">
                                         </div>
                                         <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control" type="text" id="location" required="" placeholder="Location">
+                                            <input class="form-control" type="text" name="location" placeholder="Location">
                                         </div>
                                     </div>
     
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">                                   
-                                            <input class="form-control" type="text" id="model" required="" placeholder="Car Model">
+                                            <input class="form-control" type="text" name="model" placeholder="Car Model">
                                         </div>
                                         <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control" type="text" id="prodYear" required="" placeholder="Production Year">
+                                            <input class="form-control" type="text" name="prodYear" placeholder="Production Year">
                                         </div>
                                         <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control" type="text" id="numberPlate" required="" placeholder="Number Plate">
+                                            <input class="form-control" type="text" name="numberPlate" placeholder="Number Plate">
                                         </div>
                                     </div>
     
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">                                   
-                                            <select id="bodyColor" class="form-control">
+                                            <select name="bodyColor" class="form-control">
                                                 <option value="">Select Body Color</option>
                                                 <option value="Black">Black</option>
                                                 <option value="White">White</option>      
@@ -458,7 +526,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-4 mb-3">                                       
-                                            <select id="carType" class="form-control">
+                                            <select name="carType" class="form-control">
                                                 <option value="">Select Car Type</option>
                                                 <option value="Saloon">Saloon</option>
                                                 <option value="4WD">4WD</option>      
@@ -467,7 +535,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-4 mb-3">                                        
-                                            <select id="transmission" class="form-control">
+                                            <select name="transmission" class="form-control">
                                                 <option value="">Select Transmission Type</option>
                                                 <option value="Automatic">Automatic</option>
                                                 <option value="Manual">Manual</option>     
@@ -478,28 +546,30 @@
 
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">                                   
-                                            <textarea class="form-control" type="text" id="problem" required="" placeholder="Problem with car"></textarea>
+                                            <textarea class="form-control" type="text" name="problem"  placeholder="Problem with car"></textarea>
                                         </div>
                                         <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control" type="text" id="estimatedCost" required="" placeholder="Estimated cost">
+                                            <input class="form-control" type="text" name="estimatedCost" placeholder="Estimated cost">
                                         </div>
                                         <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control flatpickr-input input active" type="text" id="estimatedDateOfCompletion" >
+                                            <input class="form-control flatpickr-input input active" type="text" name="estimatedDateOfCompletion" >
                                         </div>
                                     </div>
                                    
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">
-                                            <button class="btn btn-outline-warning" style="width:100%" type="submit">Clear</button>
+                                            <button class="btn btn-outline-warning" style="width:100%" id=clear>Clear</button>
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <button class="btn btn-outline-success"  style="width:100%" type="submit">Save</button>
+                                            <button class="btn btn-outline-success" name="submit"  style="width:100%" type="submit">Save</button>
                                         </div>                                  
                                        
                                     </div>
                                 </div>
                                
                             </form>
+
+                           
                         </div>
                     </div> <!-- // END .modal-body -->
                 </div> <!-- // END .modal-content -->

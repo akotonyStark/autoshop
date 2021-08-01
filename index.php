@@ -97,7 +97,7 @@
         $(document).ready(function(){
             
             $("#login").click(function(e){
-                window.location = "login.html"
+                window.location = "login.php"
             })
         })
     </script>

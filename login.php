@@ -105,7 +105,7 @@
                 const password = $('#password').val().trim()
 
                 if(username == "user" && password == "password"){
-                    window.location = "dashboard.html";
+                    window.location = "dashboard.php";
                 }
                 else{
                     alert("Wrong user credentials")
