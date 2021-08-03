@@ -114,14 +114,80 @@
 
 
 
-                    <div class="container page__container">                        
+                    <div class="container page__container">    
+                        
+                    
+                    <?php
+                                //include 'dbconn.php';
+
+                                // $conn = openConn();
+                                // echo "connected successfully"
+
+                                $dbhost = "localhost";
+                                $dbuser = "root";
+                                $dbpass = "";
+                                $db = "autoshop";
+                            
+                            
+                                $conn = new mysqli($dbhost, $dbuser, $dbpass, $db)  or die("Connection failed". $conn -> error);
+                                //echo "connected successfully"
+
+                                $sql = "SELECT * FROM jobs ORDER BY createdAt DESC";
+                                $result = $conn -> query($sql);
+
+                                $outstanding = 0;
+                                $todaySales = 0;
+                                $weekSales = 0;
+                                $monthSales = 0;                                
+                                $incomplete = 0;
+                                $totalJobs = 0;
+                                $incompleteJobs = 0;
+                                $completeJobs = 0;
+                                $today = date('Y-m-d');
+    
+
+
+                                if($result -> num_rows > 0){
+                                   
+                                    while($row = mysqli_fetch_array($result)){
+                                        $outstanding += ($row['EstimatedCost'] - $row['AmoutPaid']);
+                                        $totalJobs += 1;
+
+                                        if($row['JobStatus'] == 'Completed'){
+                                            $completeJobs += 1;
+                                        }
+                                        else{
+                                            $incompleteJobs += 1;
+                                        }
+
+                                        if($row['createdAt'] == $today){
+                                            $todaySales += $row['AmoutPaid'];                                       
+                                        }
+
+                                        $datetime1 = new DateTime($today);
+                                        $datetime2 = new DateTime($row['createdAt']);                                        
+                                        $interval = $datetime1->diff($datetime2);
+                                        $days = $interval->format('%R%a');
+                                        // echo $days;
+
+                                        //in the range of 7 days
+                                        if(($days) >= -7 && ($days) <= 0){
+                                            $weekSales += $row['AmoutPaid'];   
+                                        }
+                                       
+                                        
+                                        
+                                        
+                                    }
+                                }
+                    ?>
 
                         <div class="row card-group-row">
                             <div class="col-lg-4 col-md-6 card-group-row__col">
                                 <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
                                     <div class="flex">
                                         <div class="card-header__title text-muted mb-2">Today's Sales</div>
-                                        <div class="text-amount">GHS 3,200</div>
+                                        <div class="text-amount">GHS <?php print $todaySales ?></div>
                                         <!-- <div class="text-stats text-success">31.5% <i class="material-icons">arrow_upward</i></div> -->
                                     </div>
                                     <div><i class="material-icons icon-muted icon-40pt ml-3">gps_fixed</i></div>
@@ -131,27 +197,18 @@
                                 <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
                                     <div class="flex">
                                         <div class="card-header__title text-muted mb-2">Past Week's Sales</div>
-                                        <div class="text-amount">GHS 8,920</div>
+                                        <div class="text-amount">GHS  <?php print $weekSales ?></div>
                                         <!-- <div class="text-stats text-success">31.5% <i class="material-icons">arrow_upward</i></div> -->
                                     </div>
                                     <div><i class="material-icons icon-muted icon-40pt ml-3">gps_fixed</i></div>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-md-6 card-group-row__col">
-                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
-                                    <div class="flex">
-                                        <div class="card-header__title text-muted mb-2">Past Month's Sales</div>
-                                        <div class="text-amount">GHS 12,920</div>
-                                        <!-- <div class="text-stats text-success">31.5% <i class="material-icons">arrow_upward</i></div> -->
-                                    </div>
-                                    <div><i class="material-icons icon-muted icon-40pt ml-3">gps_fixed</i></div>
-                                </div>
-                            </div>
+                           
                             <div class="col-lg-4 col-md-12 card-group-row__col">
                                 <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
                                     <div class="flex">
                                         <div class="card-header__title text-muted mb-2">Oustanding Debt</div>
-                                        <div class="text-amount">GHS 2,590</div>
+                                        <div class="text-amount">GHS <?php print $outstanding ?> </div>
                                         <!-- <div class="text-stats text-danger">3.5% <i class="material-icons">arrow_downward</i></div> -->
                                     </div>
                                     <div><i class="material-icons icon-muted icon-40pt ml-3">watch_later</i></div>
@@ -160,8 +217,18 @@
                             <div class="col-lg-4 col-md-6 card-group-row__col">
                                 <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
                                     <div class="flex">
+                                        <div class="card-header__title text-muted mb-2">Total Jobs</div>
+                                        <div class="text-amount"><?php print $totalJobs ?></div>
+                                        <!-- <div class="text-stats text-success">51.5% <i class="material-icons">arrow_upward</i></div> -->
+                                    </div>
+                                    <div><i class="material-icons icon-muted  icon-40pt ml-3">hourglass_empty</i></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 card-group-row__col">
+                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
+                                    <div class="flex">
                                         <div class="card-header__title text-muted mb-2">Unfinished Jobs</div>
-                                        <div class="text-amount">17</div>
+                                        <div class="text-amount"><?php print $incompleteJobs ?></div>
                                         <!-- <div class="text-stats text-success">51.5% <i class="material-icons">arrow_upward</i></div> -->
                                     </div>
                                     <div><i class="material-icons icon-muted  icon-40pt ml-3">hourglass_empty</i></div>
@@ -171,7 +238,7 @@
                                 <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
                                     <div class="flex">
                                         <div class="card-header__title text-muted mb-2">Finished Jobs</div>
-                                        <div class="text-amount">8</div>
+                                        <div class="text-amount"><?php print $completeJobs ?></div>
                                         <!-- <div class="text-stats text-danger">3.5% <i class="material-icons">arrow_downward</i></div> -->
                                     </div>
                                     <div><i class="material-icons icon-muted icon-40pt ml-3">hourglass_full</i></div>

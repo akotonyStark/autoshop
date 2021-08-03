@@ -30,8 +30,13 @@
     <link type="text/css" href="assets/css/vendor-flatpickr.rtl.css" rel="stylesheet">
     <link type="text/css" href="assets/css/vendor-flatpickr-airbnb.css" rel="stylesheet">
     <link type="text/css" href="assets/css/vendor-flatpickr-airbnb.rtl.css" rel="stylesheet">
-
+    <link type="text/css" href="assets/vendor/daterangepicker.css" rel="stylesheet">
     <link  rel="icon" type="image/x-icon" href="assets/images/icon.ico">
+
+    <!--Kendo-->
+    <link href="assets/css/kendo.default.min.css" rel="stylesheet" />
+    <link href="assets/css/kendo.bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/kendo.common.min.css" rel="stylesheet" />
 
 
 
@@ -129,17 +134,20 @@
                                 <tr>
                                     <!-- <th scope="col">ID</th> -->
                                     <th scope="col">Name</th>
-                                    <th scope="col">Phone</th>
+                                    <!-- <th scope="col">Phone</th> -->
                                     <!-- <th scope="col">Location</th> -->
                                     <th scope="col">Car Model</th>
                                     <!-- <th scope="col">Year</th> -->
                                     <th scope="col">Plate No</th>                                    
                                     <!-- <th scope="col">Color</th> -->
                                     <!-- <th scope="col">Type</th> -->
-                                    <th scope="col">Transmission</th>
+                                    <!-- <th scope="col">Transmission</th> -->
                                     <th scope="col">Problem</th>
-                                    <th scope="col">Estimated Date</th>
-                                    <th scope="col">Estimated Cost</th>
+                                    <th scope="col">Deadline</th>
+                                    <th scope="col">Cost</th>
+                                    <th scope="col">Amount Paid</th>
+                                    <th scope="col">Balance</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Action</th>                                  
 
                                 </tr>
@@ -161,7 +169,7 @@
                                 $conn = new mysqli($dbhost, $dbuser, $dbpass, $db)  or die("Connection failed". $conn -> error);
                                 //echo "connected successfully"
 
-                                $sql = "SELECT * FROM jobs ORDER BY createdAt DESC";
+                                $sql = "SELECT * FROM jobs ORDER BY EstimatedDate ASC";
                                 $result = $conn -> query($sql);
 
                                 $outstanding = 0;
@@ -169,25 +177,32 @@
                                     while($row = mysqli_fetch_array($result)){
 
                                        
-                                        $outstanding += $row['EstimatedCost'] ;
+                                        $outstanding += ($row['EstimatedCost'] - $row['AmoutPaid']);
                                         //echo $outstanding;
                                         echo "<tr>";
                                         echo "<td>".$row['Client']."</td>";
-                                        echo "<td>".$row['Phone']."</td>";
+                                        // echo "<td>".$row['Phone']."</td>";
                                         // echo "<td>".$row['Location']."</td>";
                                         echo "<td>".$row['CarModel']."</td>";
                                         // echo "<td>".$row['YearOfMake']."</td>";
                                         echo "<td>".$row['PlateNo']."</td>";
                                         // echo "<td>".$row['Color']."</td>";
                                         // echo "<td>".$row['Type']."</td>";
-                                        echo "<td>".$row['Transmission']."</td>";
+                                        // echo "<td>".$row['Transmission']."</td>";
                                         echo "<td>".$row['Problem']."</td>";
                                         echo "<td>".$row['EstimatedDate']."</td>";
-                                        echo "<td>".number_format($row['EstimatedCost'])."</td>";                                      
-                                        echo "<td style='width:150px'>
-                                        <button  class='viewItem btn btn-info btn-sm' title='Edit' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>visibility</i></button>
-                                        <button  class='completeItem btn btn-success btn-sm' title='Complete Job' id = ".$row['id']." > <i style = 'color:white' class='material-icons'>check</i>  </button>
-                                        <button  class='removeItem btn btn-danger btn-sm' title='Delete job' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>close</i></button>               
+                                        echo "<td>".number_format($row['EstimatedCost'])."</td>";
+                                        echo "<td>".number_format($row['AmoutPaid'])."</td>"; 
+                                        echo "<td>".number_format($row['EstimatedCost'] - $row['AmoutPaid'])."</td>"; 
+                                        if($row['JobStatus'] === 'In progress'){
+                                            echo "<td><span class='badge badge-warning'>".$row['JobStatus']."</span></td>";
+                                        }else{
+                                            echo "<td><span class='badge badge-success'>".$row['JobStatus']."</span></td>";
+                                        }                                                                            
+                                        echo "<td style='width:120px'>
+                                        <button  class='viewItem btn btn-info btn-sm' data-toggle='modal' data-target='#modal-updateclient' title='Edit' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>edit</i></button>
+                                        
+                                        <button  class='removeItem btn btn-danger btn-sm' title='Delete job' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>delete</i></button>               
                                         </td>";    
                                         echo "</tr>";
                                     }
@@ -224,6 +239,8 @@
                                         $carType = mysqli_real_escape_string($conn, $_REQUEST['carType']);
                                         $transmission = mysqli_real_escape_string($conn, $_REQUEST['transmission']);
                                         $problem = mysqli_real_escape_string($conn, $_REQUEST['problem']);
+                                        $paymentAmount = mysqli_real_escape_string($conn, $_REQUEST['paymentAmount']);
+                                        $jobStatus = mysqli_real_escape_string($conn, $_REQUEST['jobStatus']);
                                         $estimatedCost = mysqli_real_escape_string($conn, $_REQUEST['estimatedCost']);
                                         $estimatedDateOfCompletion = mysqli_real_escape_string($conn, $_REQUEST['estimatedDateOfCompletion']);
                                         $createDate = date('Y-m-d H:i:s');
@@ -237,13 +254,67 @@
           
                                           $sqlInsert = "INSERT INTO jobs VALUES ('$id','$clientName','$phone','$location','$model','$prodYear',
                                                        '$numberPlate','$bodyColor','$carType','$transmission','$problem','$estimatedDateOfCompletion',
-                                                       '$estimatedCost','','','','$createDate')";
+                                                       '$estimatedCost','$paymentAmount','', '$jobStatus','$createDate')";
                                           
                                           // use exec() because no results are returned
                                           //$conn->exec($sqlInsert);
-                                          if(mysqli_query($conn, $sqlInsert)){
-                                              echo "Records added successfully.";
-                                          } else{
+                                        if(mysqli_query($conn, $sqlInsert)){
+                                            echo "Records added successfully.";
+
+                                            echo "<script type=\"text/javascript\">
+                                                     document.getElementById('jobsList').innerHTML =  '';                                            
+                                                  </script>"; 
+                            
+                                              
+
+                                            $sql = "SELECT * FROM jobs ORDER BY createdAt DESC";
+                                            $result = $conn -> query($sql);
+
+                                            $outstanding = 0;
+                                            if($result -> num_rows > 0){
+                                                while($row = mysqli_fetch_array($result)){
+
+                                                
+                                                    $outstanding += ($row['EstimatedCost'] - $row['AmoutPaid']);
+                                                    //echo $outstanding;
+                                                    echo "<tr>";
+                                                    echo "<td>".$row['Client']."</td>";
+                                                    // echo "<td>".$row['Phone']."</td>";
+                                                    // echo "<td>".$row['Location']."</td>";
+                                                    echo "<td>".$row['CarModel']."</td>";
+                                                    // echo "<td>".$row['YearOfMake']."</td>";
+                                                    echo "<td>".$row['PlateNo']."</td>";
+                                                    // echo "<td>".$row['Color']."</td>";
+                                                    // echo "<td>".$row['Type']."</td>";
+                                                    // echo "<td>".$row['Transmission']."</td>";
+                                                    echo "<td>".$row['Problem']."</td>";
+                                                    echo "<td>".$row['EstimatedDate']."</td>";
+                                                    echo "<td>".number_format($row['EstimatedCost'])."</td>";
+                                                    echo "<td>".number_format($row['AmoutPaid'])."</td>"; 
+                                                    echo "<td>".number_format($row['EstimatedCost'] - $row['AmoutPaid'])."</td>"; 
+                                                    if($row['JobStatus'] === 'In progress'){
+                                                        echo "<td><span class='badge badge-warning'>".$row['JobStatus']."</span></td>";
+                                                    }else{
+                                                        echo "<td><span class='badge badge-success'>".$row['JobStatus']."</span></td>";
+                                                    }                                                                            
+                                                    echo "<td style='width:150px'>
+                                                    <button  class='viewItem btn btn-info btn-sm' title='Edit' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>edit</i></button>
+                                                    <button  class='completeItem btn btn-success btn-sm' title='Complete Job' id = ".$row['id']." > <i style = 'color:white' class='material-icons'>check</i>  </button>
+                                                    <button  class='removeItem btn btn-danger btn-sm' title='Delete job' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>close</i></button>               
+                                                    </td>";    
+                                                    echo "</tr>";
+                                                }
+
+                                                echo "<script type=\"text/javascript\">
+                                                        var outstanding = document.getElementById('outstanding');
+                                                        outstanding.innerHTML = 'Outstanding Cash: GHS ' + ($outstanding).toLocaleString();
+                                                        
+                                                    </script>"; 
+                                        
+                                          
+                                                } 
+                                            }
+                                            else{
                                               echo "ERROR: Could not execute $sqlInsert. " . mysqli_error($conn);
                                           }
                                      }
@@ -294,7 +365,7 @@
                                 </li>
 
                                 <li class="sidebar-menu-item" data-toggle="tooltip" data-title="Logout" data-placement="right" data-container="body" data-boundary="window">
-                                    <a class="sidebar-menu-button" id='logout' href="index.html" data-toggle="tab" role="tab" aria-controls="sm_components">
+                                    <a class="sidebar-menu-button" id='logout' href="index.php" data-toggle="tab" role="tab" aria-controls="sm_components">
                                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons" >power_settings_new</i>
                                         <span class="sidebar-menu-text">Logout</span>
                                     </a>
@@ -353,6 +424,13 @@
     <script src="assets/js/check-selected-row.js"></script>
     <script src="assets/js/dropdown.js"></script>
     <script src="assets/js/sidebar-mini.js"></script>
+
+      <!-- Kendo JS -->
+    <script src="assets/js/kendo.web.min.js"></script>
+    <script src="assets/js/knockout-3.1.0.js"></script>
+    <script src="assets/js/knockout-kendo.min.js"></script>
+
+
 
     <script>
         $(document).ready(function (e){
@@ -421,7 +499,7 @@
         })()
    
         $('#logout').click(function (e){
-            window.location = "index.html"
+            window.location = "index.php"
         })
 
         $('#dashboard').click(function (e){
@@ -449,7 +527,7 @@
 
     <!-- Global Settings -->
     <script src="assets/js/settings.js"></script>
-
+     
 
     <script>
         (function() {
@@ -463,6 +541,8 @@
         })()
     </script>
 
+    
+
         <!--modal-->
         <div id="modal-addclient" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -470,36 +550,43 @@
                     <div class="modal-body">
                         <div class="px-3">
                             <div class="d-flex justify-content-center mt-2 mb-4 navbar-light">
-                                <a href="index.html" class="navbar-brand" style="min-width: 0">
+                                <a href="index.php" class="navbar-brand" style="min-width: 0">
                                     <img class="navbar-brand-icon" src="assets/images/logo.png" width="50" alt="Reben">
-                                    <span>New Job</span>
-                                </a>
+                                    <span>New Job</span>                                   
+                                </a>                               
                             </div>
-    
-                            <form action="jobs.php" method="post">
-                                <center><h4>Fill information below:</h4></center>
+                            <center><h4>Fill information below</h4></center>
+                            
+                            <form action="jobs.php" method="post" style="margin-Top: 50px;">
+                                
                                 <div class="form-group">
                                     <div class="form-row">
-                                        <div class="col-md-4 mb-3">                                   
+                                        <div class="col-md-4 mb-3">   
+                                            <label>Name</label>                                
                                             <input class="form-control" type="text" name="clientName" required="" placeholder="Client Name">
                                         </div>
-                                        <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control" type="phone" name="phone"  placeholder="Phone Number">
+                                        <div class="col-md-4 mb-3">  
+                                            <label>Phone Number</label>                                      
+                                            <input class="form-control" type="phone" name="phone" required="" placeholder="Phone Number">
                                         </div>
-                                        <div class="col-md-4 mb-3">                                        
+                                        <div class="col-md-4 mb-3">  
+                                            <label>Location</label>                                            
                                             <input class="form-control" type="text" name="location" placeholder="Location">
                                         </div>
                                     </div>
     
                                     <div class="form-row">
-                                        <div class="col-md-4 mb-3">                                   
-                                            <input class="form-control" type="text" name="model" placeholder="Car Model">
+                                        <div class="col-md-4 mb-3">   
+                                            <label>Car Model</label>                                      
+                                            <input class="form-control" type="text" name="model" required="" placeholder="Car Model">
                                         </div>
-                                        <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control" type="text" name="prodYear" placeholder="Production Year">
+                                        <div class="col-md-4 mb-3"> 
+                                            <label>Year</label>                                             
+                                            <input class="form-control" type="number" name="prodYear" placeholder="Production Year">
                                         </div>
-                                        <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control" type="text" name="numberPlate" placeholder="Number Plate">
+                                        <div class="col-md-4 mb-3">
+                                            <label>Plate Number</label>                                              
+                                            <input class="form-control" type="text" name="numberPlate" required="" placeholder="Number Plate">
                                         </div>
                                     </div>
     
@@ -545,23 +632,48 @@
                                     </div>
 
                                     <div class="form-row">
-                                        <div class="col-md-4 mb-3">                                   
-                                            <textarea class="form-control" type="text" name="problem"  placeholder="Problem with car"></textarea>
+                                        <div class="col-md-8 mb-3">  
+                                            <label>Problems</label>                                       
+                                            <textarea class="form-control" type="text" name="problem" required="" placeholder="Problems with car"></textarea>
                                         </div>
-                                        <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control" type="text" name="estimatedCost" placeholder="Estimated cost">
+                                        <div class="col-md-4 mb-3"> 
+                                            <label>Cost (GHS)</label>                                             
+                                            <input style="height:54px" class="form-control" type="number" name="estimatedCost" required="" placeholder="Estimated cost">
                                         </div>
-                                        <div class="col-md-4 mb-3">                                        
-                                            <input class="form-control flatpickr-input input active" type="text" name="estimatedDateOfCompletion" >
+                                                                             
+                                    </div>
+                                    <div class="form-row">   
+                                        
+                                    <div class="col-md-4 mb-3">  
+                                            <label>Amount Paid</label>                                            
+                                            <input class="form-control" type="number" name="paymentAmount" placeholder="Payment Amount">
+                                        </div>  
+
+                                    <div class="col-md-4 mb-3">  
+                                            <label>Job Status</label>                                    
+                                            <select name="jobStatus" class="form-control">
+                                                <option value="">Select Status</option>
+                                                <option value="In progress">In progress</option>
+                                                <option value="Completed">Complete</option>   
+                                                
+                                            </select>
+                                        </div>                                       
+                                        <div class="col-md-4 mb-3">     
+                                            <label>Estimated Completion Date</label>                                         
+                                            <input class="form-control flatpickr-input input active" type="date" name="estimatedDateOfCompletion" >
                                         </div>
+                                        <!-- <div class="col-md-4 mb-3">   
+                                            <label>Client ID</label>                                           
+                                            <input class="form-control " type="text" name="clientId" placeholder="ClientID">
+                                        </div> -->
                                     </div>
                                    
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">
-                                            <button class="btn btn-outline-warning" style="width:100%" id=clear>Clear</button>
+                                            <!-- <button class="btn btn-outline-warning" style="width:100%" id=clear>Clear</button> -->
                                         </div>
                                         <div class="col-md-4 mb-3">
-                                            <button class="btn btn-outline-success" name="submit"  style="width:100%" type="submit">Save</button>
+                                            <button class="btn btn-outline-success" name="submit"  style="width:100%" type="submit"> <i style = 'color:white' class='material-icons'>save</i>Save</button>
                                         </div>                                  
                                        
                                     </div>
@@ -576,6 +688,157 @@
             </div> <!-- // END .modal-dialog -->
         </div>
 
+
+        <div id="modal-updateclient" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="px-3">
+                            <div class="d-flex justify-content-center mt-2 mb-4 navbar-light">
+                                <a href="index.php" class="navbar-brand" style="min-width: 0">
+                                    <img class="navbar-brand-icon" src="assets/images/logo.png" width="50" alt="Reben">
+                                    <span>New Job</span>                                   
+                                </a>                               
+                            </div>
+                            <center><h4>Fill information below</h4></center>
+                            
+                            <form action="jobs.php" method="post" style="margin-Top: 50px;">
+                                
+                                <div class="form-group">
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3">   
+                                            <label>Name</label>                                
+                                            <input class="form-control" type="text" name="clientName" required="" placeholder="Client Name">
+                                        </div>
+                                        <div class="col-md-4 mb-3">  
+                                            <label>Phone Number</label>                                      
+                                            <input class="form-control" type="phone" name="phone" required="" placeholder="Phone Number">
+                                        </div>
+                                        <div class="col-md-4 mb-3">  
+                                            <label>Location</label>                                            
+                                            <input class="form-control" type="text" name="location" placeholder="Location">
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3">   
+                                            <label>Car Model</label>                                      
+                                            <input class="form-control" type="text" name="model" required="" placeholder="Car Model">
+                                        </div>
+                                        <div class="col-md-4 mb-3"> 
+                                            <label>Year</label>                                             
+                                            <input class="form-control" type="text" name="prodYear" placeholder="Production Year">
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label>Plate Number</label>                                              
+                                            <input class="form-control" type="text" name="numberPlate" required="" placeholder="Number Plate">
+                                        </div>
+                                    </div>
+    
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3">                                   
+                                            <select name="bodyColor" class="form-control">
+                                                <option value="">Select Body Color</option>
+                                                <option value="Black">Black</option>
+                                                <option value="White">White</option>      
+                                                <option value="Gray">Gray</option>
+                                                <option value="Silver">Silver</option> 
+                                                <option value="Green">Green</option>
+                                                <option value="Army Green">Army Green</option>
+                                                <option value="Red">Red</option>      
+                                                <option value="Blue">Blue</option>
+                                                <option value="Brown">Brown</option>
+                                                <option value="Orange">Orange</option>
+                                                <option value="Gold">Gold</option>      
+                                                <option value="Yellow">Yellow</option>
+                                                <option value="Purple">Purple</option>  
+                                                <option value="Pink">Pink</option>  
+                                                <option value="Mix">Mix</option>  
+                                                <option value="Other">Other/Unknown</option>     
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">                                       
+                                            <select name="carType" class="form-control">
+                                                <option value="">Select Car Type</option>
+                                                <option value="Saloon">Saloon</option>
+                                                <option value="4WD">4WD</option>      
+                                                <option value="Pickup Truck">Pickup Truck</option>
+                                                <option value="Other">Other</option>   
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">                                        
+                                            <select name="transmission" class="form-control">
+                                                <option value="">Select Transmission Type</option>
+                                                <option value="Automatic">Automatic</option>
+                                                <option value="Manual">Manual</option>     
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="col-md-8 mb-3">  
+                                            <label>Problems</label>                                       
+                                            <textarea class="form-control" type="text" name="problem" required="" placeholder="Problems with car"></textarea>
+                                        </div>
+                                        <div class="col-md-4 mb-3"> 
+                                            <label>Cost (GHS)</label>                                             
+                                            <input class="form-control" type="text" name="estimatedCost" required="" placeholder="Estimated cost">
+                                        </div>
+                                                                             
+                                    </div>
+                                    <div class="form-row">   
+                                        
+                                    <div class="col-md-4 mb-3">  
+                                            <label>Amount Paid</label>                                            
+                                            <input class="form-control" type="text" name="paymentAmount" placeholder="Payment Amount">
+                                        </div>  
+
+                                    <div class="col-md-4 mb-3">  
+                                            <label>Job Status</label>                                    
+                                            <select name="jobStatus" class="form-control">
+                                                <option value="">Select Status</option>
+                                                <option value="In progress">In progress</option>
+                                                <option value="Completed">Complete</option>   
+                                                
+                                            </select>
+                                        </div>                                       
+                                        <div class="col-md-4 mb-3">     
+                                            <label>Estimated Completion Date</label>                                         
+                                            <input class="form-control flatpickr-input input active" type="date" name="estimatedDateOfCompletion" >
+                                        </div>
+                                        <!-- <div class="col-md-4 mb-3">   
+                                            <label>Client ID</label>                                           
+                                            <input class="form-control " type="text" name="clientId" placeholder="ClientID">
+                                        </div> -->
+                                    </div>
+                                   
+                                    <div class="form-row">
+                                        <div class="col-md-4 mb-3">
+                                            <!-- <button class="btn btn-outline-warning" style="width:100%" id=clear>Clear</button> -->
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <button class="btn btn-outline-success" name="submit"  style="width:100%" type="submit"> <i style = 'color:white' class='material-icons'>save</i>Update Record</button>
+                                        </div>                                  
+                                       
+                                    </div>
+                                </div>
+                               
+                            </form>
+
+                           
+                        </div>
+                    </div> <!-- // END .modal-body -->
+                </div> <!-- // END .modal-content -->
+            </div> <!-- // END .modal-dialog -->
+        </div>
+
+
 </body>
+
+<script src="assets/js/jobs.js"></script>
+<script src="assets/PrintPDF/js/kendo.all.min.js"></script>
+<script src="assets/PrintPDF/js/pako_deflate.min.js"></script>
+<script src="assets/js/toastr.js"></script>
 
 </html>

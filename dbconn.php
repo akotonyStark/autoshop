@@ -1,15 +1,13 @@
 <?php
 
 function openConn(){
-
     $dbhost = "localhost";
     $dbuser = "root";
     $dbpass = "";
-    $db = "autoshop";
+    $db = "jobs";
 
 
-    $conn = new mysqli($dbhost, $dbuser, $dbpass, $db)  or die("Connection failed". $conn -> error);
-
+    $conn = new mysqli($dbhost, $dbuser, $dbpass, $db) or die("Connection failed", $conn -> error);
     return $conn;
 }
 
