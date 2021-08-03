@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Dashboard</title>
+    <title>Inventory</title>
 
     <!-- Prevent the demo from appearing in search engines -->
     <meta name="robots" content="noindex">
@@ -105,7 +105,7 @@
                         
                         <div class="page__heading d-flex align-items-center">
                             <div class="flex">                               
-                                <h1 class="m-0">Dashboard</h1>
+                                <h1 class="m-0">Inventory</h1>
                             </div>
                             <a href="jobs.php" class="btn btn-warning ml-3"> View Jobs</a>
                         </div>
@@ -182,70 +182,7 @@
                                 }
                     ?>
 
-                        <div class="row card-group-row">
-                            <div class="col-lg-4 col-md-6 card-group-row__col">
-                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
-                                    <div class="flex">
-                                        <div class="card-header__title text-muted mb-2">Today's Sales</div>
-                                        <div class="text-amount">GHS <?php print $todaySales ?></div>
-                                        <!-- <div class="text-stats text-success">31.5% <i class="material-icons">arrow_upward</i></div> -->
-                                    </div>
-                                    <div><i class="material-icons icon-muted icon-40pt ml-3">gps_fixed</i></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 card-group-row__col">
-                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
-                                    <div class="flex">
-                                        <div class="card-header__title text-muted mb-2">Past Week's Sales</div>
-                                        <div class="text-amount">GHS  <?php print $weekSales ?></div>
-                                        <!-- <div class="text-stats text-success">31.5% <i class="material-icons">arrow_upward</i></div> -->
-                                    </div>
-                                    <div><i class="material-icons icon-muted icon-40pt ml-3">gps_fixed</i></div>
-                                </div>
-                            </div>
-                           
-                            <div class="col-lg-4 col-md-12 card-group-row__col">
-                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
-                                    <div class="flex">
-                                        <div class="card-header__title text-muted mb-2">Oustanding Debt</div>
-                                        <div class="text-amount">GHS <?php print $outstanding ?> </div>
-                                        <!-- <div class="text-stats text-danger">3.5% <i class="material-icons">arrow_downward</i></div> -->
-                                    </div>
-                                    <div><i class="material-icons icon-muted icon-40pt ml-3">watch_later</i></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 card-group-row__col">
-                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
-                                    <div class="flex">
-                                        <div class="card-header__title text-muted mb-2">Total Jobs</div>
-                                        <div class="text-amount"><?php print $totalJobs ?></div>
-                                        <!-- <div class="text-stats text-success">51.5% <i class="material-icons">arrow_upward</i></div> -->
-                                    </div>
-                                    <div><i class="material-icons icon-muted  icon-40pt ml-3">hourglass_empty</i></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-6 card-group-row__col">
-                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
-                                    <div class="flex">
-                                        <div class="card-header__title text-muted mb-2">Unfinished Jobs</div>
-                                        <div class="text-amount"><?php print $incompleteJobs ?></div>
-                                        <!-- <div class="text-stats text-success">51.5% <i class="material-icons">arrow_upward</i></div> -->
-                                    </div>
-                                    <div><i class="material-icons icon-muted  icon-40pt ml-3">hourglass_empty</i></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-12 card-group-row__col">
-                                <div class="card card-group-row__card card-body card-body-x-lg flex-row align-items-center">
-                                    <div class="flex">
-                                        <div class="card-header__title text-muted mb-2">Finished Jobs</div>
-                                        <div class="text-amount"><?php print $completeJobs ?></div>
-                                        <!-- <div class="text-stats text-danger">3.5% <i class="material-icons">arrow_downward</i></div> -->
-                                    </div>
-                                    <div><i class="material-icons icon-muted icon-40pt ml-3">hourglass_full</i></div>
-                                </div>
-                            </div>
-                           
-                        </div>                                
+                     <img src='assets/images/404.png' alt="under construction"/>                              
                     </div>   
                 </div>
                 <!-- // END drawer-layout__content -->
@@ -270,7 +207,7 @@
                                     </a>
                                 </li>
                                 <li class="sidebar-menu-item" data-toggle="tooltip" data-title="Inventory" data-placement="right" data-container="body" data-boundary="window">
-                                    <a id='inventory' class="sidebar-menu-button" href="#sm_components" data-toggle="tab" role="tab" aria-controls="sm_components">
+                                    <a class="sidebar-menu-button" href="#sm_components" data-toggle="tab" role="tab" aria-controls="sm_components">
                                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">build</i>
                                         <span class="sidebar-menu-text">Inventory</span>
                                     </a>
@@ -404,11 +341,7 @@
         })()
    
         $('#logout').click(function (e){
-            window.location = "index.php"
-        })
-
-        $('#inventory').click(function (e){
-            window.location = "inventory.php"
+            window.location = "index.html"
         })
 
         $('#jobs').click(function (e){

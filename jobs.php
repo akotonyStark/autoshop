@@ -358,7 +358,7 @@
                                     </a>
                                 </li>
                                 <li class="sidebar-menu-item" data-toggle="tooltip" data-title="Inventory" data-placement="right" data-container="body" data-boundary="window">
-                                    <a class="sidebar-menu-button" href="#sm_components" data-toggle="tab" role="tab" aria-controls="sm_components">
+                                    <a id='inventory' class="sidebar-menu-button" href="#sm_components" data-toggle="tab" role="tab" aria-controls="sm_components">
                                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons">build</i>
                                         <span class="sidebar-menu-text">Inventory</span>
                                     </a>
@@ -500,6 +500,10 @@
    
         $('#logout').click(function (e){
             window.location = "index.php"
+        })
+
+        $('#inventory').click(function (e){
+            window.location = "inventory.php"
         })
 
         $('#dashboard').click(function (e){
