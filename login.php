@@ -43,11 +43,11 @@
             </a>
         </div>
 
-        <form action="index.html" novalidate>
+        <form action="login.php" method="post">
             <div class="form-group">
                 <label class="text-label" for="username">Username:</label>
                 <div class="input-group input-group-merge">
-                    <input id="username" type="text" required="" class="form-control form-control-prepended" placeholder="Enter your username">
+                    <input id="username" name="username" type="text" required="" class="form-control form-control-prepended" placeholder="Enter your username">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <span class="far fa-user"></span>
@@ -58,7 +58,7 @@
             <div class="form-group">
                 <label class="text-label" for="password_2">Password:</label>
                 <div class="input-group input-group-merge">
-                    <input id="password" type="password" required="" class="form-control form-control-prepended" placeholder="Enter your password">
+                    <input id="password" name="password" type="password" required="" class="form-control form-control-prepended" placeholder="Enter your password">
                     <div class="input-group-prepend">
                         <div class="input-group-text">
                             <span class="fa fa-key"></span>
@@ -68,9 +68,58 @@
             </div>
             
             <div class="form-group text-center">
-                <button class="btn btn-outline-warning" type="submit" id="authenticate" style="width:200px">Login</button><br>
+                <button class="btn btn-outline-warning" name="submit" type="submit" id="authenticate" style="width:200px">Login</button><br>
             </div>
-        </form>
+        </form>       
+        
+        <?php
+                                //include 'dbconn.php';
+
+                                // $conn = openConn();
+                                // echo "connected successfully"
+
+                                $dbhost = "localhost";
+                                $dbuser = "root";
+                                $dbpass = "";
+                                $db = "autoshop";
+                            
+                                
+                            
+                                $conn = new mysqli($dbhost, $dbuser, $dbpass, $db)  or die("Connection failed". $conn -> error);
+                                
+
+                                if($conn === false){
+                                    die("ERROR: Could not connect. " 
+                                        . mysqli_connect_error());
+                                }
+                                else{
+                                    //$prompt =  "connected successfully";
+                                    if(isset($_POST['submit'])) {
+                                        $username = mysqli_real_escape_string($conn, $_REQUEST['username']);
+                                        $password = mysqli_real_escape_string($conn, $_REQUEST['password']);
+    
+                                        $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+                                        $result = $conn -> query($sql);
+                                        if($result -> num_rows > 0){
+                                            header("Location: dashboard.php");
+                                            exit();
+                                        }
+                                        else{
+                                            $prompt =  "username or password is incorrect !!! Please try again";
+                                        }
+                                    }
+                                    else{
+                                        $prompt =  "";
+                                    }
+                                }
+                              
+                               
+                                
+                    ?>
+
+<p style="color:red; text-align: center"> <?php echo $prompt ?></p>
+
+
     </div>
 
 
@@ -96,7 +145,7 @@
     <script src="assets/js/dropdown.js"></script>
     <script src="assets/js/sidebar-mini.js"></script>
 
-    <script>
+    <!-- <script>
         $(document).ready(function (){
             $("#authenticate").click(function (e){
                 e.preventDefault();
@@ -113,7 +162,7 @@
                 
             })
         })
-    </script>
+    </script> -->
 
     <!-- App Settings (safe to remove) -->
     <script src="assets/js/app-settings.js"></script>

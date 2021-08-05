@@ -115,8 +115,40 @@
 
 
                     <div class="container page__container">    
-                        
-                    
+
+                    <div class="card card-form d-flex flex-column flex-sm-row">
+                            <div class="card-form__body card-body-form-group flex">
+                                <div class="row">
+                                    <div class="col-sm-auto">
+                                        <div class="form-group">
+                                            <label for="filter_name">Name</label>
+                                            <input id="filter_name" type="text" class="form-control" placeholder="Search by name">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <div class="form-group">
+                                            <label for="filter_category">Category</label><br>
+                                            <select id="filter_category" class="custom-select" style="width: 200px;">
+                                                <option value="all">All Categories</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-auto">
+                                        <div class="form-group">
+                                            <label for="filter_stock">In stock?</label>
+                                            <div class="custom-control custom-checkbox mt-sm-2">
+                                                <input type="checkbox" class="custom-control-input" id="filter_stock" checked="">
+                                                <label class="custom-control-label" for="filter_stock">Yes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                            <button class="btn bg-white border-left border-top border-top-sm-0 rounded-top-0 rounded-top-sm rounded-left-sm-0"><i class="material-icons text-primary icon-20pt">refresh</i></button>
+                        </div>
+
+
                     <?php
                                 //include 'dbconn.php';
 
@@ -133,53 +165,8 @@
                                 //echo "connected successfully"
 
                                 $sql = "SELECT * FROM jobs ORDER BY createdAt DESC";
-                                $result = $conn -> query($sql);
-
-                                $outstanding = 0;
-                                $todaySales = 0;
-                                $weekSales = 0;
-                                $monthSales = 0;                                
-                                $incomplete = 0;
-                                $totalJobs = 0;
-                                $incompleteJobs = 0;
-                                $completeJobs = 0;
-                                $today = date('Y-m-d');
-    
-
-
-                                if($result -> num_rows > 0){
-                                   
-                                    while($row = mysqli_fetch_array($result)){
-                                        $outstanding += ($row['EstimatedCost'] - $row['AmoutPaid']);
-                                        $totalJobs += 1;
-
-                                        if($row['JobStatus'] == 'Completed'){
-                                            $completeJobs += 1;
-                                        }
-                                        else{
-                                            $incompleteJobs += 1;
-                                        }
-
-                                        if($row['createdAt'] == $today){
-                                            $todaySales += $row['AmoutPaid'];                                       
-                                        }
-
-                                        $datetime1 = new DateTime($today);
-                                        $datetime2 = new DateTime($row['createdAt']);                                        
-                                        $interval = $datetime1->diff($datetime2);
-                                        $days = $interval->format('%R%a');
-                                        // echo $days;
-
-                                        //in the range of 7 days
-                                        if(($days) >= -7 && ($days) <= 0){
-                                            $weekSales += $row['AmoutPaid'];   
-                                        }
-                                       
-                                        
-                                        
-                                        
-                                    }
-                                }
+                               
+                                
                     ?>
 
                      <img src='assets/images/404.png' alt="under construction"/>                              
@@ -214,7 +201,7 @@
                                 </li>
 
                                 <li class="sidebar-menu-item" data-toggle="tooltip" data-title="Logout" data-placement="right" data-container="body" data-boundary="window">
-                                    <a class="sidebar-menu-button" id='logout' href="index.html" data-toggle="tab" role="tab" aria-controls="sm_components">
+                                    <a class="sidebar-menu-button" id='logout' href="index.php" data-toggle="tab" role="tab" aria-controls="sm_components">
                                         <i class="sidebar-menu-icon sidebar-menu-icon--left material-icons" >power_settings_new</i>
                                         <span class="sidebar-menu-text">Logout</span>
                                     </a>
@@ -341,7 +328,7 @@
         })()
    
         $('#logout').click(function (e){
-            window.location = "index.html"
+            window.location = "index.php"
         })
 
         $('#jobs').click(function (e){
@@ -522,7 +509,7 @@
                     <div class="modal-body">
                         <div class="px-3">
                             <div class="d-flex justify-content-center mt-2 mb-4 navbar-light">
-                                <a href="index.html" class="navbar-brand" style="min-width: 0">
+                                <a href="index.php" class="navbar-brand" style="min-width: 0">
                                     <img class="navbar-brand-icon" src="assets/images/logo.png" width="50" alt="Reben">
                                     <span>New Job</span>
                                 </a>
