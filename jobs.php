@@ -1,3 +1,5 @@
+<?php include 'dbconn.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -155,16 +157,7 @@
                             <tbody class="list" id="jobsList">
 
                             <?php
-                                //include 'dbconn.php';
-
-                                // $conn = openConn();
-                                // echo "connected successfully"
-
-                                $dbhost = "localhost";
-                                $dbuser = "root";
-                                $dbpass = "";
-                                $db = "autoshop";
-                            
+                                                          
                             
                                 $conn = new mysqli($dbhost, $dbuser, $dbpass, $db)  or die("Connection failed". $conn -> error);
                                 //echo "connected successfully"
@@ -245,14 +238,7 @@
                                         $estimatedDateOfCompletion = mysqli_real_escape_string($conn, $_REQUEST['estimatedDateOfCompletion']);
                                         $createDate = date('Y-m-d H:i:s');
           
-                                        // echo  $id;
-                                        // echo  $clientName;
-                                        // echo  $phone;
-                                        // echo  $location; 
-                                        // echo  $model .$prodYear .$numberPlate. $bodyColor. $carType. $transmission. $problem. $estimatedCost. $estimatedDateOfCompletion. $createDate;
-                                          
-          
-                                          $sqlInsert = "INSERT INTO jobs VALUES ('$id','$clientName','$phone','$location','$model','$prodYear',
+                                        $sqlInsert = "INSERT INTO jobs VALUES ('$id','$clientName','$phone','$location','$model','$prodYear',
                                                        '$numberPlate','$bodyColor','$carType','$transmission','$problem','$estimatedDateOfCompletion',
                                                        '$estimatedCost','$paymentAmount','', '$jobStatus','$createDate')";
                                           
@@ -498,8 +484,7 @@
 
         })()
    
-        $('#logout').click(function (e){
-            <?php session_destroy ?>
+        $('#logout').click(function (e){           
             window.location = "index.php"
         })
 
