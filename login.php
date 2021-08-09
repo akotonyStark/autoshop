@@ -1,3 +1,9 @@
+<?php
+
+    include 'dbconn.php';
+
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -73,27 +79,8 @@
         </form>       
         
         <?php
-                                //include 'dbconn.php';
-
-                                // $conn = openConn();
-                                // echo "connected successfully"
-
-                                $dbhost = "localhost";
-                                $dbuser = "root";
-                                $dbpass = "";
-                                $db = "autoshop";
-                            
-                                
-                            
-                                $conn = new mysqli($dbhost, $dbuser, $dbpass, $db)  or die("Connection failed". $conn -> error);
-                                
-
-                                if($conn === false){
-                                    die("ERROR: Could not connect. " 
-                                        . mysqli_connect_error());
-                                }
-                                else{
-                                    //$prompt =  "connected successfully";
+                               
+                           
                                     if(isset($_POST['submit'])) {
                                         session_start();
                                         $username = mysqli_real_escape_string($conn, $_REQUEST['username']);
@@ -114,7 +101,7 @@
                                     else{
                                         $prompt =  "";
                                     }
-                                }
+                                
                               
                                
                                 
