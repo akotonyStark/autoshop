@@ -95,14 +95,17 @@
                                 else{
                                     //$prompt =  "connected successfully";
                                     if(isset($_POST['submit'])) {
+                                        session_start();
                                         $username = mysqli_real_escape_string($conn, $_REQUEST['username']);
                                         $password = mysqli_real_escape_string($conn, $_REQUEST['password']);
     
                                         $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
                                         $result = $conn -> query($sql);
-                                        if($result -> num_rows > 0){
-                                            header("Location: dashboard.php");
-                                            exit();
+                                        if($result -> num_rows > 0){                                           
+                                            $_SESSION['username'] = $username;   
+                                            header("Location: dashboard.php");                                       
+                                            //exit();
+                                            //echo $_SESSION['username'];
                                         }
                                         else{
                                             $prompt =  "username or password is incorrect !!! Please try again";

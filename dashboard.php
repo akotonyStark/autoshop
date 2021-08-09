@@ -1,3 +1,14 @@
+<?php
+
+    session_start();
+    $userId = $_SESSION['username'];
+
+    echo $userId;
+    if(!isset($_SESSION['username'])){
+        header("Location: login.php");
+    }
+    ?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -35,11 +46,13 @@
 
     <!-- Vector Maps -->
     <link type="text/css" href="assets/vendor/jqvmap/jqvmap.min.css" rel="stylesheet">
-    <link  rel="icon" type="image/x-icon" href="assets/images/icon.ico"
+    <link  rel="icon" type="image/x-icon" href="assets/images/icon.ico">
 
 
 
 </head>
+
+
 
 <body class="layout-mini">
 
@@ -404,6 +417,8 @@
         })()
    
         $('#logout').click(function (e){
+
+            <?php session_destroy() ?>
             window.location = "index.php"
         })
 

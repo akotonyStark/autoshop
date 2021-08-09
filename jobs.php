@@ -499,6 +499,7 @@
         })()
    
         $('#logout').click(function (e){
+            <?php session_destroy ?>
             window.location = "index.php"
         })
 
