@@ -1,3 +1,4 @@
+<?php  include 'dbconn.php'; ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -150,19 +151,7 @@
 
 
                     <?php
-                                //include 'dbconn.php';
-
-                                // $conn = openConn();
-                                // echo "connected successfully"
-
-                                $dbhost = "localhost";
-                                $dbuser = "root";
-                                $dbpass = "";
-                                $db = "autoshop";
-                            
-                            
-                                $conn = new mysqli($dbhost, $dbuser, $dbpass, $db)  or die("Connection failed". $conn -> error);
-                                //echo "connected successfully"
+                              
 
                                 $sql = "SELECT * FROM jobs ORDER BY createdAt DESC";
                                
