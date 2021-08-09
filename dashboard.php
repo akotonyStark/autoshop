@@ -1,9 +1,10 @@
 <?php
 
+    include 'dbconn.php';
     session_start();
     $userId = $_SESSION['username'];
 
-    echo $userId;
+    //echo $userId;
     if(!isset($_SESSION['username'])){
         header("Location: login.php");
     }
@@ -131,20 +132,7 @@
                         
                     
                     <?php
-                                //include 'dbconn.php';
-
-                                // $conn = openConn();
-                                // echo "connected successfully"
-
-                                $dbhost = "localhost";
-                                $dbuser = "root";
-                                $dbpass = "";
-                                $db = "autoshop";
-                            
-                            
-                                $conn = new mysqli($dbhost, $dbuser, $dbpass, $db)  or die("Connection failed". $conn -> error);
-                                //echo "connected successfully"
-
+                               
                                 $sql = "SELECT * FROM jobs ORDER BY createdAt DESC";
                                 $result = $conn -> query($sql);
 
