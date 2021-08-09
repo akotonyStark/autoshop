@@ -167,9 +167,15 @@
 
                                 $outstanding = 0;
                                 if($result -> num_rows > 0){
+                                    $arrayData = array();
                                     while($row = mysqli_fetch_array($result)){
+                                                         
+                                        //pushing data into array
+                                       $arrayData[] = array(
+                                           'Client' => $row["Client"]
+                                       );
+                                        
 
-                                       
                                         $outstanding += ($row['EstimatedCost'] - $row['AmoutPaid']);
                                         //echo $outstanding;
                                         echo "<tr>";
@@ -193,19 +199,19 @@
                                             echo "<td><span class='badge badge-success'>".$row['JobStatus']."</span></td>";
                                         }                                                                            
                                         echo "<td style='width:120px'>
-                                        <button  class='viewItem btn btn-info btn-sm' data-toggle='modal' data-target='#modal-updateclient' title='Edit' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>edit</i></button>
-                                        
+                                        <button type='submit' name='viewItem' class='viewItem btn btn-info btn-sm' data-toggle='modal' data-target='#modal-updateclient' title='Edit' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>edit</i></button>                                        
                                         <button  class='removeItem btn btn-danger btn-sm' title='Delete job' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>delete</i></button>               
                                         </td>";    
                                         echo "</tr>";
                                     }
 
+
+                                    echo json_encode($arrayData);
                                     echo "<script type=\"text/javascript\">
                                             var outstanding = document.getElementById('outstanding');
                                             outstanding.innerHTML = 'Outstanding Cash: GHS ' + ($outstanding).toLocaleString();
                                             
-                                        </script>";
-                                    
+                                        </script>";                                    
                                         
                                 }
                                 else{
@@ -258,8 +264,8 @@
 
                                             $outstanding = 0;
                                             if($result -> num_rows > 0){
+                                               
                                                 while($row = mysqli_fetch_array($result)){
-
                                                 
                                                     $outstanding += ($row['EstimatedCost'] - $row['AmoutPaid']);
                                                     //echo $outstanding;
@@ -285,7 +291,6 @@
                                                     }                                                                            
                                                     echo "<td style='width:150px'>
                                                     <button  class='viewItem btn btn-info btn-sm' title='Edit' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>edit</i></button>
-                                                    <button  class='completeItem btn btn-success btn-sm' title='Complete Job' id = ".$row['id']." > <i style = 'color:white' class='material-icons'>check</i>  </button>
                                                     <button  class='removeItem btn btn-danger btn-sm' title='Delete job' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>close</i></button>               
                                                     </td>";    
                                                     echo "</tr>";
@@ -306,8 +311,14 @@
                                      }
                                 }
                                
+
+                                //editting record
+                                if(isset($_POST['viewItem'])){
+                                    echo "Edit me";
+                                }
                                
                             ?>
+
 
                             </tbody>
                         </table>                           
