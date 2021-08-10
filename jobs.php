@@ -172,21 +172,34 @@
                                                          
                                         //pushing data into array
                                        $arrayData[] = array(
-                                           'Client' => $row["Client"]
+                                           'Client' => $row["Client"],
+                                           'Phone'  => $row['Phone'],
+                                           'Location' => $row['LocationOfOwner'],
+                                           'Model' => $row['CarModel'],
+                                           'YearOfMake' => $row['YearOfMake'],
+                                           'PlateNo' => $row['PlateNo'],
+                                           'Color' => $row['Color'],
+                                           'Type' => $row['CarType'],
+                                           'Transmission' => $row['Transmission'],
+                                           'Problem' => $row['Problem'],
+                                           'EstimatedDate' => $row['EstimatedDate'],
+                                           'AmountPaid' => $row['AmoutPaid'],
+                                           'JobStatus' => $row['JobStatus']
                                        );
-                                        
+
+                                                                        
 
                                         $outstanding += ($row['EstimatedCost'] - $row['AmoutPaid']);
                                         //echo $outstanding;
                                         echo "<tr>";
                                         echo "<td>".$row['Client']."</td>";
                                         // echo "<td>".$row['Phone']."</td>";
-                                        // echo "<td>".$row['Location']."</td>";
+                                        // echo "<td>".$row['LocationOfOwner']."</td>";
                                         echo "<td>".$row['CarModel']."</td>";
                                         // echo "<td>".$row['YearOfMake']."</td>";
                                         echo "<td>".$row['PlateNo']."</td>";
                                         // echo "<td>".$row['Color']."</td>";
-                                        // echo "<td>".$row['Type']."</td>";
+                                        // echo "<td>".$row['CarType']."</td>";
                                         // echo "<td>".$row['Transmission']."</td>";
                                         echo "<td>".$row['Problem']."</td>";
                                         echo "<td>".$row['EstimatedDate']."</td>";
@@ -206,10 +219,12 @@
                                     }
 
 
-                                    echo json_encode($arrayData);
+                                    $data = json_encode($arrayData);
                                     echo "<script type=\"text/javascript\">
                                             var outstanding = document.getElementById('outstanding');
                                             outstanding.innerHTML = 'Outstanding Cash: GHS ' + ($outstanding).toLocaleString();
+                                            let data = $data;
+                                            console.log(data);
                                             
                                         </script>";                                    
                                         
@@ -840,6 +855,6 @@
 <script src="assets/js/jobs.js"></script>
 <script src="assets/PrintPDF/js/kendo.all.min.js"></script>
 <script src="assets/PrintPDF/js/pako_deflate.min.js"></script>
-<script src="assets/js/toastr.js"></script>
+<!-- <script src="assets/js/toastr.js"></script> -->
 
 </html>
