@@ -172,6 +172,7 @@
                                                          
                                         //pushing data into array
                                        $arrayData[] = array(
+                                           'Id' => $row["id"],
                                            'Client' => $row["Client"],
                                            'Phone'  => $row['Phone'],
                                            'Location' => $row['LocationOfOwner'],
@@ -183,6 +184,7 @@
                                            'Transmission' => $row['Transmission'],
                                            'Problem' => $row['Problem'],
                                            'EstimatedDate' => $row['EstimatedDate'],
+                                           'EstimatedCost' => $row['EstimatedCost'],
                                            'AmountPaid' => $row['AmoutPaid'],
                                            'JobStatus' => $row['JobStatus']
                                        );
@@ -223,9 +225,7 @@
                                     echo "<script type=\"text/javascript\">
                                             var outstanding = document.getElementById('outstanding');
                                             outstanding.innerHTML = 'Outstanding Cash: GHS ' + ($outstanding).toLocaleString();
-                                            let data = $data;
-                                            console.log(data);
-                                            
+                                            let data = $data;                                                                                        
                                         </script>";                                    
                                         
                                 }
@@ -579,36 +579,37 @@
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">   
                                             <label>Name</label>                                
-                                            <input class="form-control" type="text" name="clientName" required="" placeholder="Client Name">
+                                            <input class="form-control" type="text" id="clientName" name="clientName" required="" placeholder="Client Name">
                                         </div>
                                         <div class="col-md-4 mb-3">  
                                             <label>Phone Number</label>                                      
-                                            <input class="form-control" type="phone" name="phone" required="" placeholder="Phone Number">
+                                            <input class="form-control" type="phone" id="phone" name="phone" required="" placeholder="Phone Number">
                                         </div>
                                         <div class="col-md-4 mb-3">  
                                             <label>Location</label>                                            
-                                            <input class="form-control" type="text" name="location" placeholder="Location">
+                                            <input class="form-control" type="text" id="location" name="location" placeholder="Location">
                                         </div>
                                     </div>
     
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">   
                                             <label>Car Model</label>                                      
-                                            <input class="form-control" type="text" name="model" required="" placeholder="Car Model">
+                                            <input class="form-control" type="text" id="model" name="model" required="" placeholder="Car Model">
                                         </div>
                                         <div class="col-md-4 mb-3"> 
                                             <label>Year</label>                                             
-                                            <input class="form-control" type="number" name="prodYear" placeholder="Production Year">
+                                            <input class="form-control" type="number" id="prodYear" name="prodYear" placeholder="Production Year">
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label>Plate Number</label>                                              
-                                            <input class="form-control" type="text" name="numberPlate" required="" placeholder="Number Plate">
+                                            <input class="form-control" type="text" id="numberPlate" name="numberPlate" required="" placeholder="Number Plate">
                                         </div>
                                     </div>
     
                                     <div class="form-row">
-                                        <div class="col-md-4 mb-3">                                   
-                                            <select name="bodyColor" class="form-control">
+                                        <div class="col-md-4 mb-3">  
+                                                                         
+                                            <select id="bodyColor" name="bodyColor" class="form-control">
                                                 <option value="">Select Body Color</option>
                                                 <option value="Black">Black</option>
                                                 <option value="White">White</option>      
@@ -650,24 +651,26 @@
                                     <div class="form-row">
                                         <div class="col-md-8 mb-3">  
                                             <label>Problems</label>                                       
-                                            <textarea class="form-control" type="text" name="problem" required="" placeholder="Problems with car"></textarea>
+                                            <textarea class="form-control" type="text" id="problem" name="problem" required="" placeholder="Problems with car"></textarea>
                                         </div>
                                         <div class="col-md-4 mb-3"> 
                                             <label>Cost (GHS)</label>                                             
-                                            <input style="height:54px" class="form-control" type="number" name="estimatedCost" required="" placeholder="Estimated cost">
+                                            <input style="height:54px" class="form-control" type="number" id="estimatedCost" name="estimatedCost" required="" placeholder="Estimated cost">
                                         </div>
                                                                              
                                     </div>
+
                                     <div class="form-row">   
                                         
-                                    <div class="col-md-4 mb-3">  
+                                        <div class="col-md-4 mb-3">  
                                             <label>Amount Paid</label>                                            
-                                            <input class="form-control" type="number" name="paymentAmount" placeholder="Payment Amount">
+                                            <input class="form-control" type="number" id="paymentAmount" name="paymentAmount" placeholder="Payment Amount">
                                         </div>  
 
-                                    <div class="col-md-4 mb-3">  
+                                   
+                                        <div class="col-md-4 mb-3">  
                                             <label>Job Status</label>                                    
-                                            <select name="jobStatus" class="form-control">
+                                            <select name="jobStatus" id="jobStatus" class="form-control">
                                                 <option value="">Select Status</option>
                                                 <option value="In progress">In progress</option>
                                                 <option value="Completed">Complete</option>   
@@ -676,7 +679,7 @@
                                         </div>                                       
                                         <div class="col-md-4 mb-3">     
                                             <label>Estimated Completion Date</label>                                         
-                                            <input class="form-control flatpickr-input input active" type="date" name="estimatedDateOfCompletion" >
+                                            <input class="form-control flatpickr-input input active" type="date" id="estimatedDateOfCompletion" name="estimatedDateOfCompletion" >
                                         </div>
                                         <!-- <div class="col-md-4 mb-3">   
                                             <label>Client ID</label>                                           
@@ -721,39 +724,41 @@
                             <form action="jobs.php" method="post" style="margin-Top: 50px;">
                                 
                                 <div class="form-group">
-                                    <div class="form-row">
+
+                                <div class="form-row">
                                         <div class="col-md-4 mb-3">   
                                             <label>Name</label>                                
-                                            <input class="form-control" type="text" name="clientName" required="" placeholder="Client Name">
+                                            <input class="form-control" type="text" id="clientNameU" name="clientName" required="" placeholder="Client Name">
                                         </div>
                                         <div class="col-md-4 mb-3">  
                                             <label>Phone Number</label>                                      
-                                            <input class="form-control" type="phone" name="phone" required="" placeholder="Phone Number">
+                                            <input class="form-control" type="phone" id="phoneU" name="phone" required="" placeholder="Phone Number">
                                         </div>
                                         <div class="col-md-4 mb-3">  
                                             <label>Location</label>                                            
-                                            <input class="form-control" type="text" name="location" placeholder="Location">
+                                            <input class="form-control" type="text" id="locationU" name="location" placeholder="Location">
                                         </div>
                                     </div>
     
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">   
                                             <label>Car Model</label>                                      
-                                            <input class="form-control" type="text" name="model" required="" placeholder="Car Model">
+                                            <input class="form-control" type="text" id="modelU" name="model" required="" placeholder="Car Model">
                                         </div>
                                         <div class="col-md-4 mb-3"> 
                                             <label>Year</label>                                             
-                                            <input class="form-control" type="text" name="prodYear" placeholder="Production Year">
+                                            <input class="form-control" type="number" id="prodYearU" name="prodYear" placeholder="Production Year">
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label>Plate Number</label>                                              
-                                            <input class="form-control" type="text" name="numberPlate" required="" placeholder="Number Plate">
+                                            <input class="form-control" type="text" id="numberPlateU" name="numberPlate" required="" placeholder="Number Plate">
                                         </div>
                                     </div>
     
                                     <div class="form-row">
-                                        <div class="col-md-4 mb-3">                                   
-                                            <select name="bodyColor" class="form-control">
+                                        <div class="col-md-4 mb-3">
+                                            <label>Car's Color</label>                                   
+                                            <select id="bodyColorU" name="bodyColor" class="form-control">
                                                 <option value="">Select Body Color</option>
                                                 <option value="Black">Black</option>
                                                 <option value="White">White</option>      
@@ -773,8 +778,9 @@
                                                 <option value="Other">Other/Unknown</option>     
                                             </select>
                                         </div>
-                                        <div class="col-md-4 mb-3">                                       
-                                            <select name="carType" class="form-control">
+                                        <div class="col-md-4 mb-3">   
+                                            <label>Car Type</label>                                    
+                                            <select id="carTypeU" name="carType" class="form-control">
                                                 <option value="">Select Car Type</option>
                                                 <option value="Saloon">Saloon</option>
                                                 <option value="4WD">4WD</option>      
@@ -782,8 +788,9 @@
                                                 <option value="Other">Other</option>   
                                             </select>
                                         </div>
-                                        <div class="col-md-4 mb-3">                                        
-                                            <select name="transmission" class="form-control">
+                                        <div class="col-md-4 mb-3">  
+                                            <label>Car Transmission</label>                                      
+                                            <select id="transmissionU" name="transmission" class="form-control">
                                                 <option value="">Select Transmission Type</option>
                                                 <option value="Automatic">Automatic</option>
                                                 <option value="Manual">Manual</option>     
@@ -795,24 +802,26 @@
                                     <div class="form-row">
                                         <div class="col-md-8 mb-3">  
                                             <label>Problems</label>                                       
-                                            <textarea class="form-control" type="text" name="problem" required="" placeholder="Problems with car"></textarea>
+                                            <textarea class="form-control" type="text" id="problemU" name="problem" required="" placeholder="Problems with car"></textarea>
                                         </div>
                                         <div class="col-md-4 mb-3"> 
                                             <label>Cost (GHS)</label>                                             
-                                            <input class="form-control" type="text" name="estimatedCost" required="" placeholder="Estimated cost">
+                                            <input style="height:54px" class="form-control" type="number" id="estimatedCostU" name="estimatedCost" required="" placeholder="Estimated cost">
                                         </div>
                                                                              
                                     </div>
+
                                     <div class="form-row">   
                                         
-                                    <div class="col-md-4 mb-3">  
+                                        <div class="col-md-4 mb-3">  
                                             <label>Amount Paid</label>                                            
-                                            <input class="form-control" type="text" name="paymentAmount" placeholder="Payment Amount">
+                                            <input class="form-control" type="number" id="paymentAmountU" name="paymentAmount" placeholder="Payment Amount">
                                         </div>  
 
-                                    <div class="col-md-4 mb-3">  
+                                   
+                                        <div class="col-md-4 mb-3">  
                                             <label>Job Status</label>                                    
-                                            <select name="jobStatus" class="form-control">
+                                            <select name="jobStatus" id="jobStatusU" class="form-control">
                                                 <option value="">Select Status</option>
                                                 <option value="In progress">In progress</option>
                                                 <option value="Completed">Complete</option>   
@@ -821,13 +830,14 @@
                                         </div>                                       
                                         <div class="col-md-4 mb-3">     
                                             <label>Estimated Completion Date</label>                                         
-                                            <input class="form-control flatpickr-input input active" type="date" name="estimatedDateOfCompletion" >
+                                            <input class="form-control flatpickr-input input active" type="date" id="estimatedDateOfCompletionU" name="estimatedDateOfCompletion" >
                                         </div>
                                         <!-- <div class="col-md-4 mb-3">   
                                             <label>Client ID</label>                                           
                                             <input class="form-control " type="text" name="clientId" placeholder="ClientID">
                                         </div> -->
                                     </div>
+                                   
                                    
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">
