@@ -1,3 +1,21 @@
+$(document).ready(function(){
+    console.log("Loading.... ", data);
+})
+
+$('.viewItem').click(function(){
+    let id = this.id;
+    //console.log(id);
+    getDataByID(id)
+})
+
+
+function getDataByID(id){
+    let bigData = data;
+    let res = bigData.filter((record, index) => record.Id == id);
+    console.log(res)
+}
+   
+   
    $("#printList").click(() => {
 
     // Reduce font-size from 18px to 10px [For Downlaod Qulaity]
