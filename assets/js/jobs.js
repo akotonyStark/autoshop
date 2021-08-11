@@ -1,10 +1,11 @@
 $(document).ready(function(){
-    console.log("Loading.... ", data);
+    //console.log("Loading.... ", data);
 })
 
 $('.viewItem').click(function(){
     let id = this.id;
     //console.log(id);
+    // localStorage.setItem("idSelected", id);
     getDataByID(id);
 
 })
@@ -14,6 +15,7 @@ function getDataByID(id){
     let bigData = data;
     let res = bigData.filter((record, index) => record.Id == id);
     //console.log(res[0].Client)
+    $('#selectedId').val(res[0].Id);
     $('#clientNameU').val(res[0].Client);
     $('#phoneU').val(res[0].Phone);
     $('#locationU').val(res[0].Location);
