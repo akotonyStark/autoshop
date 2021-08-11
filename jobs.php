@@ -321,8 +321,7 @@
                                               echo "ERROR: Could not execute $sqlInsert. " . mysqli_error($conn);
                                           }
                                      }
-                                }
-                               
+                                }                              
 
                                 
                                 //update record
@@ -341,72 +340,25 @@
                                         $paymentAmount = mysqli_real_escape_string($conn, $_REQUEST['paymentAmount']);
                                         $jobStatus = mysqli_real_escape_string($conn, $_REQUEST['jobStatus']);
                                         $estimatedCost = mysqli_real_escape_string($conn, $_REQUEST['estimatedCost']);
-                                        $estimatedDateOfCompletion = mysqli_real_escape_string($conn, $_REQUEST['estimatedDateOfCompletion']);                                                                            
+                                        $estimatedDateOfCompletion = mysqli_real_escape_string($conn, $_REQUEST['estimatedDateOfCompletion']);   
+                                        $balance = $estimatedCost-$paymentAmount;                                                                         
 
                                                  
                                         $sqlUpdate = "UPDATE `jobs` SET Client = '$clientName', Phone = '$phone', LocationOfOwner = '$location',
                                         CarModel = '$model', YearOfMake = '$prodYear', PlateNo = '$numberPlate', Color = '$bodyColor',
                                         CarType = '$carType', Transmission = '$transmission', Problem = '$problem', EstimatedDate = '$estimatedDateOfCompletion',
-                                        EstimatedCost = '$estimatedCost', AmoutPaid = '$paymentAmount', Balance=('$estimatedCost-$paymentAmount'), JobStatus = '$jobStatus'
+                                        EstimatedCost = '$estimatedCost', AmoutPaid = '$paymentAmount', Balance = '$balance', JobStatus = '$jobStatus'
                                         WHERE id = '$selectedId'";
                                           
                                           // use exec() because no results are returned
                                           //$conn->exec($sqlInsert);
                                         if(mysqli_query($conn, $sqlUpdate)){
-                                            echo "Records added successfully.";
+                                            echo "Records updated successfully.";
 
                                             echo "<script type=\"text/javascript\">
-                                                     document.getElementById('jobsList').innerHTML =  '';                                            
-                                                  </script>"; 
-                            
+                                                     location.reload();                                            
+                                                  </script>";                           
                                               
-
-                                            $sql = "SELECT * FROM jobs ORDER BY createdAt DESC";
-                                            $result = $conn -> query($sql);
-
-                                            $outstanding = 0;
-                                            if($result -> num_rows > 0){
-                                               
-                                                while($row = mysqli_fetch_array($result)){
-                                                
-                                                    $outstanding += ($row['EstimatedCost'] - $row['AmoutPaid']);
-                                                    //echo $outstanding;
-                                                    echo "<tr>";
-                                                    echo "<td>".$row['Client']."</td>";
-                                                    // echo "<td>".$row['Phone']."</td>";
-                                                    // echo "<td>".$row['Location']."</td>";
-                                                    echo "<td>".$row['CarModel']."</td>";
-                                                    // echo "<td>".$row['YearOfMake']."</td>";
-                                                    echo "<td>".$row['PlateNo']."</td>";
-                                                    // echo "<td>".$row['Color']."</td>";
-                                                    // echo "<td>".$row['Type']."</td>";
-                                                    // echo "<td>".$row['Transmission']."</td>";
-                                                    echo "<td>".$row['Problem']."</td>";
-                                                    echo "<td>".$row['EstimatedDate']."</td>";
-                                                    echo "<td>".number_format($row['EstimatedCost'])."</td>";
-                                                    echo "<td>".number_format($row['AmoutPaid'])."</td>"; 
-                                                    echo "<td>".number_format($row['EstimatedCost'] - $row['AmoutPaid'])."</td>"; 
-                                                    if($row['JobStatus'] === 'In progress'){
-                                                        echo "<td><span class='badge badge-warning'>".$row['JobStatus']."</span></td>";
-                                                    }else{
-                                                        echo "<td><span class='badge badge-success'>".$row['JobStatus']."</span></td>";
-                                                    }                                                                            
-                                                    echo "<td style='width:150px'>
-                                                    <button  class='viewItem btn btn-info btn-sm' title='Edit' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>edit</i></button>
-                                                    <button  class='removeItem btn btn-danger btn-sm' title='Delete job' id = ".$row['id']."> <i style = 'color:white' class='material-icons'>close</i></button>               
-                                                    </td>";    
-                                                    echo "</tr>";
-                                                }
-
-                                                echo "<script type=\"text/javascript\">
-                                                        var outstanding = document.getElementById('outstanding');
-                                                        outstanding.innerHTML = 'Outstanding Cash: GHS ' + ($outstanding).toLocaleString();
-                                                        
-                                                    </script>"; 
-                                        
-                                          
-                                                } 
-                                            }
                                 }
                                
                             ?>
@@ -918,7 +870,7 @@
                                    
                                     <div class="form-row">
                                         <div class="col-md-4 mb-3">
-                                            <!-- <button class="btn btn-outline-warning" style="width:100%" id=clear>Clear</button> -->
+                                            <input class="form-control" type="text" id="selectedId" name="selectedId" hidden>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <button class="btn btn-outline-success" name="update"  style="width:100%" type="submit"> <i style = 'color:white' class='material-icons'>save</i>Update Record</button>
