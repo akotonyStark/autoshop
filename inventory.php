@@ -36,7 +36,7 @@
 
     <!-- Vector Maps -->
     <link type="text/css" href="assets/vendor/jqvmap/jqvmap.min.css" rel="stylesheet">
-    <link  rel="icon" type="image/x-icon" href="assets/images/icon.ico"
+    <link  rel="icon" type="image/x-icon" href="assets/images/icon.ico">
 
 
 
@@ -102,7 +102,7 @@
             <div class="mdk-drawer-layout js-mdk-drawer-layout" data-push data-responsive-width="992px">
                 <div class="mdk-drawer-layout__content page">
 
-                    <div class="container page__heading-container">
+                    <div class="container-fluid page__heading-container">
                         
                         <div class="page__heading d-flex align-items-center">
                             <div class="flex">                               
@@ -115,7 +115,7 @@
 
 
 
-                    <div class="container page__container">    
+                    <div class="container-fluid page__container">    
 
                     <div class="card card-form d-flex flex-column flex-sm-row">
                             <div class="card-form__body card-body-form-group flex">
@@ -158,7 +158,48 @@
                                 
                     ?>
 
-                     <img src='assets/images/404.png' alt="under construction"/>                              
+         <div class="col-lg-12 card-form__body">
+
+            <div class="table-responsive border-bottom" data-toggle="lists" data-lists-values="[&quot;js-lists-values-employee-name&quot;]">
+
+                <div class="search-form search-form--light m-3">
+                    <input type="text" class="form-control search" placeholder="Search">
+                    <button class="btn" type="button" role="button"><i class="material-icons">search</i></button>
+                </div>
+
+                <table class="table mb-0 thead-border-top-0">
+                    <thead>
+                        <tr>
+
+                            <th>Code</th>
+                            <th >Item Name</th>
+                            <th >Brand</th>
+                            <th >Supplier</th>
+                            <th >Supplier's Contact</th>
+                            <th >No  in Stock</th>
+                            <th >Unit Price</th>
+                            <th >Selling Price</th>
+                            <th style="width: 24px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="list" id="staff02">
+                        <tr>
+
+                            <td> 00093   </td>
+                            <td><span class="badge badge-warning">Car Battery</span></td>
+                            <td>Bolden</td>
+                            <td>Abossey Okai</td>
+                            <td>0244677313</td>
+                            <td>35</td>
+                            <td>300</td>
+                            <td>350</td>
+                            <td><a href="" class="text-muted"><i class="material-icons">more_vert</i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+</div>
+                           
                     </div>   
                 </div>
                 <!-- // END drawer-layout__content -->
