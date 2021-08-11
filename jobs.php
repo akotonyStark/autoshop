@@ -350,14 +350,14 @@
                                         EstimatedCost = '$estimatedCost', AmoutPaid = '$paymentAmount', Balance = '$balance', JobStatus = '$jobStatus'
                                         WHERE id = '$selectedId'";
                                           
-                                          // use exec() because no results are returned
-                                          //$conn->exec($sqlInsert);
+                                         
+                                     
                                         if(mysqli_query($conn, $sqlUpdate)){
-                                            echo "Records updated successfully.";
-
                                             echo "<script type=\"text/javascript\">
-                                                     location.reload();                                            
-                                                  </script>";                           
+                                            window.location = 'jobs.php';                                            
+                                         </script>"; 
+                                        }
+                                                                   
                                               
                                 }
                                
