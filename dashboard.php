@@ -2,12 +2,12 @@
 
     include 'dbconn.php';
     session_start();
-    $userId = $_SESSION['username'];
+    //$userId = $_SESSION['username'];
 
     //echo $userId;
-    if(!isset($_SESSION['username'])){
-        header("Location: login.php");
-    }
+    // if(!isset($_SESSION['username'])){
+    //     header("Location: login.php");
+    // }
     ?>
 
 <!DOCTYPE html>
