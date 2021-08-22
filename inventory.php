@@ -120,12 +120,7 @@
                     <div class="card card-form d-flex flex-column flex-sm-row">
                             <div class="card-form__body card-body-form-group flex">
                                 <div class="row">
-                                    <div class="col-sm-auto">
-                                        <div class="form-group">
-                                            <label for="filter_name">Name</label>
-                                            <input id="filter_name" type="text" class="form-control" placeholder="Search by name">
-                                        </div>
-                                    </div>
+                                   
                                     <div class="col-sm-auto">
                                         <div class="form-group">
                                             <label for="filter_category">Category</label><br>
@@ -174,6 +169,7 @@
                             <th>Code</th>
                             <th >Item Name</th>
                             <th >Brand</th>
+                            <th >Category</th>
                             <th >Supplier</th>
                             <th >Supplier's Contact</th>
                             <th >No  in Stock</th>
@@ -188,6 +184,7 @@
                             <td> 00093   </td>
                             <td><span class="badge badge-warning">Car Battery</span></td>
                             <td>Bolden</td>
+                            <td>Electricals</td>
                             <td>Abossey Okai</td>
                             <td>0244677313</td>
                             <td>35</td>
