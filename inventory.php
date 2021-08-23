@@ -1,4 +1,5 @@
 <?php  include 'dbconn.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -178,20 +179,51 @@
                             <th style="width: 24px;"></th>
                         </tr>
                     </thead>
-                    <tbody class="list" id="staff02">
-                        <tr>
+                    <tbody class="list" id="inventoryList">
+                                         <?php                                                        
+                                                          
 
-                            <td> 00093   </td>
-                            <td><span class="badge badge-warning">Car Battery</span></td>
-                            <td>Bolden</td>
-                            <td>Electricals</td>
-                            <td>Abossey Okai</td>
-                            <td>0244677313</td>
-                            <td>35</td>
-                            <td>300</td>
-                            <td>350</td>
-                            <td><a href="" class="text-muted"><i class="material-icons">more_vert</i></a></td>
-                        </tr>
+                                                          $sql = "SELECT DISTINCT FROM inventory";
+                                                          $result = $conn -> query($sql);
+                          
+                                                          $outstanding = 0;
+                                                          if($result -> num_rows > 0){
+                                                              $arrayData = array();
+                                                              while($row = mysqli_fetch_array($result)){
+                                                                                   
+                                                                  //pushing data into array
+                                                                 $arrayData[] = array(
+                                                                     'Code' => $row["Code"],
+                                                                     'ItemName' => $row["ItemName"],
+                                                                     'Brand'  => $row['Brand'],
+                                                                     'Category' => $row['Category'],
+                                                                     'Supplier' => $row['Supplier'],
+                                                                     'SuppliersContact' => $row['SuppliersContact'],
+                                                                     'NoInStock' => $row['NoInStock'],
+                                                                     'UnitPrice' => $row['UnitPrice'],
+                                                                     'SellingPrice' => $row['SellingPrice']                                                                     
+                                                                 );
+                          
+                                                             
+                                                                  echo "<tr>";
+                                                                  echo "<td>".$row['Code']."</td>";
+                                                                  echo "<td>".$row['ItemName']."</td>";                                                                  
+                                                                  echo "<td>".$row['Brand']."</td>";                                                                
+                                                                  echo "<td>".$row['Category']."</td>";
+                                                                  echo "<td>".$row['Supplier']."</td>";
+                                                                  echo "<td>".$row['SuppliersContact']."</td>";
+                                                                  echo "<td>".number_format($row['NoInStock'])."</td>";
+                                                                  echo "<td>".number_format($row['UnitPrice'])."</td>"; 
+                                                                  echo "<td>".number_format($row['SellingPrice'])."</td>"; 
+                                                                                                                                      
+                                                                  echo "<td style='width:120px'>
+                                                                  <button type='submit' name='viewItem' class='viewItem btn btn-info btn-sm' data-toggle='modal' data-target='#modal-updateclient' title='Edit' id = ".$row['Code']."> <i style = 'color:white' class='material-icons'>edit</i></button>                                        
+                                                                  <button  class='removeItem btn btn-danger btn-sm' title='Delete job' id = ".$row['Code']."> <i style = 'color:white' class='material-icons'>delete</i></button>               
+                                                                  </td>";    
+                                                                  echo "</tr>";
+                                                              }
+                                                            }
+                                        ?>
                     </tbody>
                 </table>
             </div>
