@@ -183,7 +183,7 @@
                                          <?php                                                        
                                                           
 
-                                                          $sql = "SELECT DISTINCT FROM inventory";
+                                                          $sql = "SELECT DISTINCT * FROM inventory";
                                                           $result = $conn -> query($sql);
                           
                                                           $outstanding = 0;
